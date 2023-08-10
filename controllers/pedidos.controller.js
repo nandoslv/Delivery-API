@@ -2,9 +2,8 @@ import express from "express";
 import { promises as fs } from 'fs';
 
 const { readFile, writeFile } = fs;
-const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+async function getAllPedidos(req, res, next) {
     try {
         const data = JSON.parse(await readFile(global.fileName));
         delete data.nextId;
@@ -14,9 +13,9 @@ router.get('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.post('/', async (req, res, next) => {
+async function createPedido(req, res, next) {
     try {
         let pedido = req.body;
         const data = JSON.parse(await readFile(global.fileName));
@@ -44,9 +43,9 @@ router.post('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.put('/', async (req, res, next) => {
+async function updatePedido(req, res, next) {
     try {
         let pedido = req.body;
 
@@ -73,9 +72,9 @@ router.put('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.patch('/', async (req, res, next) => {
+async function updateEntregaPedido(req, res, next) {
     try {
         let pedido = req.body;
 
@@ -99,9 +98,9 @@ router.patch('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.delete('/:id', async (req, res, next) => {
+async function deletePedido (req, res, next) {
     try {
         const data = JSON.parse(await readFile(global.fileName));
         const pedidos = data.pedidos.filter((pedido) =>
@@ -116,9 +115,9 @@ router.delete('/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.get('/:id', async (req, res, next) => {
+async function getPedido (req, res, next) {
     try {
         const data = JSON.parse(await readFile(global.fileName));
         const pedido = data.pedidos.filter((pedido) =>
@@ -131,10 +130,9 @@ router.get('/:id', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-
-router.post('/totalPorCliente', async (req, res, next) => {
+async function getTotalPorCliente (req, res, next) {
     try {
         let params = req.body;
         let totalPorCliente = 0;
@@ -151,9 +149,9 @@ router.post('/totalPorCliente', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.post('/totalPorProduto', async (req, res, next) => {
+async function getTotalPorProduto (req, res, next) {
     try {
         let params = req.body;
         let totalPorProduto = 0;
@@ -170,12 +168,16 @@ router.post('/totalPorProduto', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.use((err, req, res, next) => {
-    global.logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
-    console.log(err)
-    res.status(400).send({ error: err.message })
-})
-
-export default router;
+export default
+    {
+        getAllPedidos,
+        createPedido,
+        updatePedido,
+        updateEntregaPedido,
+        deletePedido,
+        getPedido,
+        getTotalPorCliente,
+        getTotalPorProduto
+    }

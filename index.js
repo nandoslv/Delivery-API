@@ -1,6 +1,6 @@
 import express from 'express';
-import pedidosRouter from './routes/pedidos.js';
-import maisVendidosRouter from './routes/maisVendidos.js';
+import pedidosRouter from './routes/pedidos.routes.js';
+import maisVendidosRouter from './routes/maisVendidos.routes.js';
 import { promises as fs } from 'fs';
 import winston from 'winston';
 import cors from 'cors';

@@ -2,9 +2,8 @@ import express from "express";
 import { promises as fs } from 'fs';
 
 const { readFile, writeFile } = fs;
-const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+async function getMaisVendidos (req, res, next) {
     try {
         const data = JSON.parse(await readFile(global.fileName));        
         const agrupamento = data.pedidos
@@ -50,12 +49,6 @@ router.get('/', async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-});
+}
 
-router.use((err, req, res, next) => {
-    global.logger.error(`${req.method} ${req.baseUrl} - ${err.message}`);
-    console.log(err)
-    res.status(400).send({ error: err.message })
-})
-
-export default router;
+export default getMaisVendidos;
